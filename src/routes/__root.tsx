@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "ChainProof" },
+      { name: "description", content: "ChainProof verifies document integrity by storing file hashes on the blockchain." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "ChainProof" },
+      { property: "og:description", content: "ChainProof verifies document integrity by storing file hashes on the blockchain." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "ChainProof" },
+      { name: "twitter:description", content: "ChainProof verifies document integrity by storing file hashes on the blockchain." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9ef917f5-a1bc-4825-8380-cc0996fd4478/id-preview-addb9275--b66beba9-4afa-4a58-8e24-35f97e9322c6.lovable.app-1776849996313.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9ef917f5-a1bc-4825-8380-cc0996fd4478/id-preview-addb9275--b66beba9-4afa-4a58-8e24-35f97e9322c6.lovable.app-1776849996313.png" },
     ],
     links: [
       {
