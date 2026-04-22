@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShieldCheck, Github } from "lucide-react";
+import { ShieldCheck, Code2 } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { WalletCard } from "@/components/chainproof/WalletCard";
 import { RegisterCard } from "@/components/chainproof/RegisterCard";
@@ -54,7 +54,7 @@ function Index() {
             rel="noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
           >
-            <Github className="h-4 w-4" /> Local + Sepolia ready
+            <Code2 className="h-4 w-4" /> Local + Sepolia ready
           </a>
         </div>
       </header>
