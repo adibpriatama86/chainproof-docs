@@ -31,8 +31,9 @@ export function RecentList({ refreshKey = 0 }: { refreshKey?: number }) {
     setError(null);
     try {
       const contract = await getReadContract();
-      const hashes: string[] = await contract.getAllDocumentHashes();
-      const recent = hashes.slice(-10).reverse();
+      const result = await contract.getAllDocumentHashes();
+      const hashes: string[] = Array.from(result as Iterable<string>);
+      const recent = [...hashes].slice(-10).reverse();
       const items = await Promise.all(
         recent.map(async (h) => {
           const [, fileName, description, uploadedAt, owner] =
