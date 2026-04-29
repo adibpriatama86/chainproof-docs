@@ -2,7 +2,11 @@ import { useEffect, useState, useCallback } from "react";
 import { Clock, RefreshCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getReadContract, CONTRACT_ADDRESS } from "@/lib/chainproof/contract";
+import {
+  getReadContract,
+  CONTRACT_ADDRESS,
+  ERR_ABI_MISMATCH,
+} from "@/lib/chainproof/contract";
 import {
   formatTimestamp,
   shortAddress,
@@ -31,8 +35,35 @@ export function RecentList({ refreshKey = 0 }: { refreshKey?: number }) {
     setError(null);
     try {
       const contract = await getReadContract();
-      const result = await contract.getAllDocumentHashes();
-      const hashes: string[] = Array.from(result as Iterable<string>);
+
+      // 1) Try the canonical view function.
+      let hashes: string[] = [];
+      try {
+        const result = await contract.getAllDocumentHashes();
+        hashes = Array.from(result as Iterable<string>);
+      } catch (primaryErr) {
+        const msg = (primaryErr as Error).message ?? "";
+        // BAD_DATA / "could not decode result data" usually means: the address
+        // exists but the function does not — i.e. ABI/method mismatch.
+        // Fall back to scanning DocumentRegistered events.
+        if (/BAD_DATA|could not decode|missing revert data/i.test(msg)) {
+          try {
+            const filter = contract.filters.DocumentRegistered();
+            const events = await contract.queryFilter(filter, 0, "latest");
+            hashes = events
+              .map((ev) => {
+                const args = (ev as { args?: { fileHash?: string } }).args;
+                return args?.fileHash ?? "";
+              })
+              .filter(Boolean);
+          } catch {
+            throw new Error(ERR_ABI_MISMATCH);
+          }
+        } else {
+          throw primaryErr;
+        }
+      }
+
       const recent = [...hashes].slice(-10).reverse();
       const items = await Promise.all(
         recent.map(async (h) => {
